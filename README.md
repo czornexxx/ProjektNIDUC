@@ -8,4 +8,5 @@ Co by dla wszystkich była jasność. Temat: System szeregowy z magazynem częś
 W pliku umieszczamy problemy, opisy itp. 
 
 *************************************Zajecia 17.03.2014*****************************************
+
 1. Napisać symulator, i przetestować n -> razy.
