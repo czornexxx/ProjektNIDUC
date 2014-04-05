@@ -1,0 +1,5 @@
+skala ksztalt iloscElZamiennych
+ 3 3 0
+ 2 9 5
+ 5 12 8
+ 2 9 5
