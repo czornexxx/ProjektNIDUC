@@ -11,16 +11,15 @@ fclose('all');
 n = data(1,1);      %iloœæ elementów
 k = data(1,2);      %iloœæ konserwatorów
 
-for j=2 :(n+1)
-    
+for j=2 :(n+1)      % wczytanie danych o elementach
     for l=1 :2
-    elementy((j-1),l) = data(j,l);      % wczytanie wartosci kazdego elementu
+        elementy((j-1),l) = data(j,l);      % wczytanie wartosci kazdego elementu
     end;
 end;
 
 ltmp = 1;
-%Czyszczenie danych
-for h=1 :30
+%Czyszczenie danych, Oraz pêtla do wyznaczenia œredniej symulacji
+for h=1 :30     
 
 clear czasZycia;
 clear cname;
@@ -28,16 +27,15 @@ clear vname;
 clear data;
 clear plik;
 clear magazyn1;
-%losowanie czasów ¿ycia elemntów
 
 magazyn1 = magazyn;
 
+%losowanie czasów ¿ycia elemntów
 for i=1 :n
     czasZycia(i) = wblrnd(elementy(i,1), elementy(i,2));
 end;
 
 % Symulacja pracy uk³adu
-
 wynik(ltmp, 1) = -99;
 wynik(ltmp, 2) = h;
 wynik(ltmp, 3) = -99;
@@ -45,7 +43,7 @@ ltmp = ltmp + 1;
 czas = 0;
 dziala = 1;
 
-while dziala == 1
+while dziala == 1               % Pêtla symulatora
     
     czas = czas + 0.01;         % zwiekszenie czasu dzialania
     for i=1 :n                  % odejmowanie czasu zycia elementow
@@ -53,7 +51,7 @@ while dziala == 1
     end;
     
     for i=1 :n
-        if(czasZycia(i) <= 0)    % czy skoñczy³ siê czas ¿ycia elementu
+        if(czasZycia(i) <= 0)       % czy skoñczy³ siê czas ¿ycia elementu
             if(magazyn1(i) == 0 )   % jeœli brak elementow to zakoncz pêtle
                 dziala = 0;
            
@@ -67,7 +65,7 @@ while dziala == 1
                       end;
                   end;
                   ltmp = ltmp + 1;
-                
+           % Elementy s¹ w magazynie
             else
                 magazyn1(i) = magazyn1(i) - 1;    
                 wynik(ltmp,1) = czas;
@@ -102,19 +100,22 @@ for j=1 :(ltmp -1)
     end;
    fprintf(plik, '\n');
 end;
-
 fclose(plik);
 
+% Obliczanie œredniego czasu oraz zapis wyników.
 suma = 0;
 for i=1 :h
     suma = suma + wynikCaly(i);
 end;
 srednia = suma/h;
 
-hist(wynikCaly,5);
+hist(wynikCaly,15);
 end;
 
 % *************************************************************************
+% *************************************************************************
+% *********** Obliczanie czasu dla iloœci el. podanych z pliku ************
+
 if(funkcja == 0)
     
 clc;
@@ -213,9 +214,9 @@ end;
 plik = fopen('wynik.txt', 'w'); 
 for j=1 :(ltmp -1)
     fprintf(plik, '%6.2f', wynik(j,1));
-for i=2 :n+1
-     fprintf(plik, '%6.0f', wynik(j,i));
-end;
+        for i=2 :n+1
+             fprintf(plik, '%6.0f', wynik(j,i));
+        end;
    fprintf(plik, '\n');
 end;
 
