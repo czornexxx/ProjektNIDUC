@@ -1,0 +1,128 @@
+ brak_kon=false;
+ flaga_losuj=true;
+ t_awarii=0;                                    %czas wystapienia awarii czyli min z wylosowanych plus czas ostatniej awarii                                           
+ kon_il=2;                                      %ilosc konserwatorow
+ mi=0; 
+ mi_zycie=0;                                    %warosci czasu zycia
+ mi_naprawa=0;                                  %wartosci czasu naprawy
+ iloscEl =  [30 20 10];                         % ilosc elementow zapasowych 
+ t_sym =1000000;                                 %czas symulacji
+ t=0.0000;                                      %aktualny czas
+ Tab_zd_cz_n       = [0 0 0];                   %czas naprawy poszczególnych elementow
+ Tab_zd_cz_z       = [0 0 0];                   %czas życia poszczególnych elementow
+ S = [0 0 0];                                   %stany poszczególnych elementów 0 sprawny 1 uszkodzony w naprawie 2 uszkodzony czeka
+ Tab_zw_kon        = [0 0];                     %czas zakonczenia naprawy przez konserwatora
+ flag =true;                                    %flaga inforująca o trwaniu symulacji
+  while flag
+
+ t=t+1;%aktualny czas symulacji inkrementacja  
+ 
+ if flaga_losuj == true
+           
+     %wylosowanie tablicy zdarzen  
+     Tab_zd_cz_z = [round(wblrnd(1000,2)) round(wblrnd(1000,2)) round(wblrnd(1000,2))]; %czas życia
+     Tab_zd_cz_n = [round(wblrnd(10,2)) round(wblrnd(10,2)) round(wblrnd(10,2))];       %czas naprawy
+     
+ 
+     %kolejnosc uszkodzen elementow
+     mi_zycie= min(Tab_zd_cz_z );
+     t_awarii=mi_zycie+t;
+     for i=1:3
+      
+          if  Tab_zd_cz_z (i) ==  mi_zycie          
+          mi=i;
+          end;
+    
+     end;
+     flaga_losuj=false;
+ end;
+
+    
+ 
+  % wystapienie awarii czyli czas t jest równy najkrotszemu czasowi życia
+  % plus czas ostatniej awarii 
+
+  if t==t_awarii
+            if (kon_il>0)
+                 kon_il=kon_il-1;
+                 S(mi)=1;
+                 iloscEl(mi) = iloscEl(mi)-1 ;
+                 flaga_losuj = true;          
+            end;
+              if kon_il==0         
+                 S(mi)=2;
+                 brak_kons= true;
+                 czas_brak_kon=t;
+              end;
+              string=     'czas     ';
+          A = sprintf('%s ',string );
+          disp(A);
+          A = sprintf('%1.2f ',t );
+          disp(A);
+          string=     'stan poszczegolnych elementow';
+          A = sprintf('%s ',string );
+          disp(A);
+          A = sprintf(' %1d %1d %1d ',S );
+          disp(A);
+          string='ilosc elementow w magazynie';
+          A = sprintf('%s ',string );
+          disp(A);
+          A = sprintf('%1d %1d %1d ',iloscEl );
+          disp(A);
+          
+  end;
+  
+
+           %sprawdzenie czy istnieja oczekujące na naprawę elementy  
+           for indeks=1:3  
+               % sprawdzenie czy istnieja oczekujący konserwatorzy
+               if (kon_il>0)
+                     
+                           if (S(i)==2 |S(i)==1) 
+                             %naprawa elementu oczekujacego                             
+                             iloscEl(i)=iloscEl(i)-1;
+                             kon_il= kon_il-1;
+                             S(i)=0;
+                              t=t+Tab_zd_cz_n (i);
+                             string=     'czas     ';
+          A = sprintf('%s ',string );
+          disp(A);
+          A = sprintf('%1.2f ',t );
+          disp(A);
+          string=     'stan poszczegolnych elementow';
+          A = sprintf('%s ',string );
+          disp(A);
+          A = sprintf(' %1d %1d %1d ',S );
+          disp(A);
+          string='ilosc elementow w magazynie';
+          A = sprintf('%s ',string );
+          disp(A);
+          A = sprintf('%1d %1d %1d ',iloscEl );
+          disp(A);
+          
+                             
+                            
+                             
+                             
+                           end;
+
+
+                end;
+            end;
+   
+ 
+     
+     %warunki zakonczenia symulacji
+     if min(iloscEl)<=0
+          flaga=false;
+          break;
+     end;
+     
+     if t > t_sym
+          flaga=false;
+          break;
+      end;
+    
+ end;
+
+ 
