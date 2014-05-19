@@ -1,5 +1,6 @@
 %           stany 0 sprawy 1 uszkodzony w naprawie 2 uszkodzony oczekujacy
-
+t_zak_kons_1=0;
+t_zak_kons_2=0;
 flaga_nowy =false;
 flaga_symulacja=true;
 ilosc_elementow = [ 125 169 178 ];
@@ -12,9 +13,6 @@ macierz_glowna=zeros(suma,3);%wszystkie czasy życia , czas naprawy i numer elem
 macierz_glowna_prim=zeros(2*suma,5); %czas     numer elementu zmienionego stany elementów
 t_symulacji=50000;
 ilosc_konserwatorow =2;
-
-
-
 
 %           czas życia i naprawy każdego elementu
 for i=1:suma
@@ -40,8 +38,6 @@ for i=1:suma
 end;
 %           czas wystapienia uszkodzenia i zakonczenia naprawy każdego elementu bez
 %           uwzglednienia konserwatorów i ilosci czesci zamiennych
-
-
 flaga =true;
 
 for i=1:suma
@@ -80,8 +76,6 @@ for i=1:suma
           
           
 end;
-
-
 j=1;
 %  petla itworzaca wszystkie zdarzenia teoretyczne czyli uszkodzenia i
 %  naprawy nie uwzgledniajaca konserwatorow
@@ -134,7 +128,7 @@ wiersz=wymiary(1);
 %uwzgledniajaca konserwatorow
 macierz_glowna_tertio=zeros(2*wiersz,5);
 %petla tworzaca ostateczny wynik
-%indeksem macierzy ostatecznego wyniku jest j > i
+%indeksem macierzy ostatecznego wyniku jest j 
 
 j=1;
 for i=1:wiersz
@@ -144,7 +138,7 @@ for i=1:wiersz
           %zapisujemy dane zdarzenie
           if macierz_glowna_secans(i, macierz_glowna_secans(i,2)+2)==1 && ilosc_konserwatorow>0 ;
                     
-                    %zmniejszamy ilosc dostepnych konserwatorow         
+                    %zmniejszamy ilosc dostepnych konserwatorow
                     ilosc_konserwatorow=ilosc_konserwatorow-1;
                     %zapisujemy stan
                     S(macierz_glowna_secans(i,2))= macierz_glowna_secans(i, macierz_glowna_secans(i,2)+2);
@@ -153,33 +147,74 @@ for i=1:wiersz
                     macierz_glowna_tertio(j,3)=S(1);
                     macierz_glowna_tertio(j,4)=S(2);
                     macierz_glowna_tertio(j,5)=S(3);
-                    j=j+1;                   
+                    j=j+1;
                     
           end;
           
-          %jesli wystapiło uszkodenie a nie mamy wolnych konserwatorów
+          %jesli wystapiło uszkodenie i nie mamy wolnych konserwatorów
           %stan danego elementu zapisujemy jako 2
           if macierz_glowna_secans(i, macierz_glowna_secans(i,2)+2)==1 && ilosc_konserwatorow==0 ;
-                    %zmniejszamy ilosc dostepnych konserwatorow 
-                    S(macierz_glowna_secans(i,2))=2;                       
+                   
+                    S(macierz_glowna_secans(i,2))=2;
                     macierz_glowna_tertio(j,1)=macierz_glowna_secans(i,1);
                     macierz_glowna_tertio(j,2)=macierz_glowna_secans(i,2);
                     macierz_glowna_tertio(j,3)=S(1);
                     macierz_glowna_tertio(j,4)=S(2);
                     macierz_glowna_tertio(j,5)=S(3);
-                    j=j+1;                   
+                    j=j+1;
+                    %w macierzy secans czas zakonczenia naprawy to czas
+                    %zwolnienia konserwtora + czas naprawy
+                    
+                    
+                   
+                    pierwszy=false;
+                    %szukamy więc min czasu zakonczenia naprawy 
+                    for k=i:1
+                              if macierz_glowna(macierz_glowna_secans(k,2)+2)==0 && pierwszy==false
+                                        t_zak_kons_1=macierz_glowna_secans(k,1);
+                                        
+                              end;
+                              
+                              if macierz_glowna(macierz_glowna_secans(k,2)+2)==0 && pierwszy==true
+                                        
+                                        t_zak_kons_2=macierz_glowna_secans(k,1);
+                                        
+                                        
+                                        break;
+                              end;
+                              
+                    end;
+                  
+                    
                     
           end;
           
-          %jesli wystapiła naprawa stan danego elementu zapisujemy jako 0
+          %jesli wystapiło zakończenie naprawy stan danego elementu zapisujemy jako 0
           %zwiekszamy ilość dostepnych konserwatorów
-        
+          
           if macierz_glowna_secans(i, macierz_glowna_secans(i,2)+2)==0  ;
+                    
+                    if  S(macierz_glowna_secans(i,2))==2
+                      %do pom przypisujemy mniejszy z czasów zakonczenia
+                    %naprawy
+                    pom=min(t_zak_kons_1,t_zak_kons_2);
                    
-                    
-                    
                     %zapisujemy czas numer elementu i stany elementów
-                    S(macierz_glowna_secans(i,2))=0;                       
+                    S(macierz_glowna_secans(i,2))=0;
+                    macierz_glowna_tertio(j,1)=macierz_glowna_secans(i,1)+pom;
+                    macierz_glowna_tertio(j,2)=macierz_glowna_secans(i,2);
+                    macierz_glowna_tertio(j,3)=S(1);
+                    macierz_glowna_tertio(j,4)=S(2);
+                    macierz_glowna_tertio(j,5)=S(3);
+                    
+                    %zwiekszamy ilosc konserwatorów
+                    ilosc_konserwatorow=ilosc_konserwatorow+1;
+                    j=j+1;
+                    end;
+                    
+                    if  S(macierz_glowna_secans(i,2))~=2
+                    %zapisujemy czas numer elementu i stany elementów
+                    S(macierz_glowna_secans(i,2))=0;
                     macierz_glowna_tertio(j,1)=macierz_glowna_secans(i,1);
                     macierz_glowna_tertio(j,2)=macierz_glowna_secans(i,2);
                     macierz_glowna_tertio(j,3)=S(1);
@@ -188,22 +223,28 @@ for i=1:wiersz
                     
                     %zwiekszamy ilosc konserwatorów
                     ilosc_konserwatorow=ilosc_konserwatorow+1;
-                    j=j+1;                   
-                    
-          end;
-          
-          
-                   
-            
-          
-          
-          
-          
-          
-          
-          
+                    j=j+1;
+                    end;
+          end;       
 end;
 
+macierz_glowna_quatro=zeros(wiersz,1);
+j=1;
+for i=1:wiersz
+          
+    if max(macierz_glowna_tertio(i,3:5))~=0
+    macierz_glowna_quatro(j,1)=macierz_glowna_tertio(i,1);
+    j=j+1;
+    end;
+end;
+
+%czasy zdarzen
+figure(1);
+hist(macierz_glowna_tertio(1:239,1));
+
+%czasy uszkodzenia systemu
+figure(2);     
+hist(macierz_glowna_quatro(1:173,1));
 
 
 
