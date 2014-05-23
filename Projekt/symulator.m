@@ -2,9 +2,9 @@
 % *********************** Przegl¹d Zupe³ny ********************************
 % *************************************************************************
 
-budzet = 20;                                % bud¿et 
-n = 3;                                      % Iloœæ el. Zgoda z plikiem
-kosztyEl = [5 5 5];                         % koszt elementow
+budzet = 300;                                % bud¿et 
+n = 4;                                      % Iloœæ el. Zgoda z plikiem
+kosztyEl = [5 7 10 15];                         % koszt elementow
 % wygenerowanie macierzy wektorow
 macierzWektorow = generujWektory(kosztyEl, budzet);
 
@@ -21,7 +21,7 @@ wynik = 0;
         wynik(i,2) = i;
     end;
 
-i = max(wynik(:,1))                         % wybranie najd³u¿szego czasu
+i = max(wynik(:,1));                         % wybranie najd³u¿szego czasu
 
     for k=1 :iloscW                         % wyszukanie wektora odpowiadaj¹cego max czas.
         if(wynik(k,1) == i)
@@ -29,5 +29,28 @@ i = max(wynik(:,1))                         % wybranie najd³u¿szego czasu
         end;
     end;
     
-macierzWektorow(wynik(k,2),:)               % wypisanie tego wektora na konsoli.
+% wyszukanie najczêœciej powtarzaj¹cego siê wektora
+macWyniki(a,:) =  macierzWektorow(wynik(k,2),:);               % wypisanie tego wektora na konsoli.
 end;
+
+maxWektor = mode(macWyniki)
+
+
+for a=1 : 1000
+    
+    wynikWektor(a) = symKonserwatory(maxWektor)   
+    
+end;
+
+hist(wynikWektor);
+
+
+plik = fopen('czasySymulacji.txt', 'w'); 
+for j=1 :a 
+   
+    fprintf(plik, '%6.2f', wynikWektor(j));
+    fprintf(plik, '\n');
+    
+end;
+fclose(plik);
+

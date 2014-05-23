@@ -45,9 +45,9 @@ dziala = 1;
 
 while dziala == 1               % Pêtla symulatora
     
-    czas = czas + 0.01;         % zwiekszenie czasu dzialania
+    czas = czas + 10;         % zwiekszenie czasu dzialania
     for i=1 :n                  % odejmowanie czasu zycia elementow
-        czasZycia(i) = czasZycia(i) - 0.01; 
+        czasZycia(i) = czasZycia(i) - 10; 
     end;
     
     for i=1 :n
@@ -164,9 +164,9 @@ dziala = 1;
 
 while dziala == 1
     
-    czas = czas + 0.01;         % zwiekszenie czasu dzialania
+    czas = czas + 10;         % zwiekszenie czasu dzialania
     for i=1 :n                  % odejmowanie czasu zycia elementow
-        czasZycia(i) = czasZycia(i) - 0.01; 
+        czasZycia(i) = czasZycia(i) - 10; 
     end;
     
     for i=1 :n

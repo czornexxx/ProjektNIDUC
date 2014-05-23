@@ -1,5 +1,6 @@
 skala ksztalt iloscElZamiennych
- 3 3 0
- 2 9 5
- 5 12 8
- 8 19 5
+ 4 2 0
+ 100 10 5
+ 500 2 8
+ 1000 44 5
+ 300 44 5
