@@ -1,0 +1,13 @@
+Wektor: 
+maxWektor =
+
+    13     2     1     4
+
+Przy cenie el: 
+kosztyEl = [5 7 10 15];   
+
+Budzet: 150
+
+Konserwatorów: 2
+
+Otwieraæ w WordPad'zie

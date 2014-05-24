@@ -11,7 +11,7 @@ macierzWektorow = generujWektory(kosztyEl, budzet);
 tmp = size(macierzWektorow);                % odczytanie ilosci potencjalnych wektorów
 iloscW = tmp(1);                            % iloœæ potencjalnych wektorów
 
-for a=1 :20                                 % Przeprowadzenie symulacji 20 razy
+for a=1 :10                                 % Przeprowadzenie symulacji 20 razy
   
 clear wynik;
 wynik = 0;
