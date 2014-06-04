@@ -137,8 +137,6 @@ while dziala == 1
 end;
 
 
-macHistoria
-
 plik = fopen('historia.txt', 'w'); 
 for j=1 :(wiersz -1)
     fprintf(plik, '%6.2f', macHistoria(j,1));

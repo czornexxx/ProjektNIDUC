@@ -1,10 +1,11 @@
 % *************************************************************************
-% *********************** Przegl¹d Zupe³ny ********************************
+% ************************** Symulator ************************************
 % *************************************************************************
 
-budzet = 300;                                % bud¿et 
+budzet = 100;                                % bud¿et 
 n = 4;                                      % Iloœæ el. Zgoda z plikiem
-kosztyEl = [5 7 10 15];                         % koszt elementow
+kosztyEl = [15 10 11 14];                          % koszt elementow
+
 % wygenerowanie macierzy wektorow
 macierzWektorow = generujWektory(kosztyEl, budzet);
 
@@ -30,21 +31,21 @@ i = max(wynik(:,1));                         % wybranie najd³u¿szego czasu
     end;
     
 % wyszukanie najczêœciej powtarzaj¹cego siê wektora
-macWyniki(a,:) =  macierzWektorow(wynik(k,2),:);               % wypisanie tego wektora na konsoli.
+macWyniki(a,:) =  macierzWektorow(wynik(k,2),:);
 end;
 
-maxWektor = mode(macWyniki)
+maxWektor = mode(macWyniki);
 
-
+% G³ówna symulacja przeprowadzona 1000x
 for a=1 : 1000
     
-    wynikWektor(a) = symKonserwatory(maxWektor)   
-    
+    wynikWektor(a) = symKonserwatory(maxWektor);   
 end;
 
+% Wygenerowanie histogramu
 hist(wynikWektor);
 
-
+% Zapis wyników do pliku 
 plik = fopen('czasySymulacji.txt', 'w'); 
 for j=1 :a 
    
