@@ -1,0 +1,31 @@
+data
+CZAS_ZYCIA ;
+infile 'C:\Users\kacper\Desktop\PROJEKT\czasy.txt';
+input czas;
+run;
+TITLE "CZASY USZKODZENA SYSTEMU";
+proc univariate data=CZAS_ZYCIA;
+      
+      histogram ;
+	 
+run;
+TITLE "PRAWDOPODOBIENSTWO USZKODZEN SYSTEMU WEIBULL";
+proc capability data=CZAS_ZYCIA;
+var czas;
+
+histogram czas /weibull ; 
+run;
+TITLE "PRAWDOPODOBIENSTWO USZKODZEN SYSTEMU NORMAL";
+proc capability data=CZAS_ZYCIA;
+var czas;
+
+histogram czas /normal ; 
+run;
+TITLE "PRAWDOPODOBIENSTWO USZKODZEN SYSTEMU GAMMA";
+proc capability data=CZAS_ZYCIA;
+var czas;
+
+histogram czas /gamma ; 
+run;
+   
+ 
