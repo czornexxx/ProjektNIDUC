@@ -28,4 +28,17 @@ var czas;
 histogram czas /gamma ; 
 run;
    
+proc reliability data=CZAS_ZYCIA; 
+
+distribution Weibull;
+pplot czas*censor( 1 ) / 
+covb
+cfit = yellow
+cframe = ligr
+ccensor = red;
+inset / cfill = ywh;
+
+
+run; 
+
  
